@@ -1,6 +1,10 @@
 # Platte
 
-Platte is a small command line tool that combines static HTML pages from modules.
+![Plattenbau](pic.jpg)
+
+*(Transport of Plattenbau parts in Karl-Marx-Stadt, GDR, 1975 [CC BY-SA 3.0 de](https://creativecommons.org/licenses/by-sa/3.0/de/deed.en) Deutsche Fotothek)*
+
+Platte is a small command line tool that combines static HTML pages from modules. It is named after the german word [Plattenbau](https://en.wikipedia.org/wiki/Plattenbau) which is a way of building houses based on pre-fabricated parts.
 
 ## Installation
 
