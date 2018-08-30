@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+
+require 'thor'
+require './lib/combinator'
+require 'fileutils'
+
+# Platte command line tool
+class Platte < Thor
+  desc 'combine FILE MAIN [MODULE [MODULE ...]]', 'combine FILE from MAIN and MODULES.'
+  def combine(file, main, *modules)
+    main_module, platte_modules = get_modules main, modules
+    write_to_file file, Combinator.new.combine(main_module, platte_modules)
+    copy_assets File.dirname(file), main_module, platte_modules
+  end
+
+  private
+
+  def get_modules(main, modules)
+    main_module = PlatteModule.new "modules/%s.main" % main
+    platte_modules = modules.map { |mod| PlatteModule.new "modules/%s.module" % mod }
+
+    [main_module, platte_modules]
+  end
+
+  def write_to_file(file, contents)
+    file = File.new(file, "w")
+    file.write(contents)
+    file.close
+  end
+
+  def copy_assets(destination, main, modules)
+    FileUtils.copy_entry "#{main.directory}/assets", "#{destination}/assets"
+    modules.each { |mod| FileUtils.copy_entry "#{mod.directory}/assets", "#{destination}/assets" } if modules
+  end
+end
+
+Platte.start
