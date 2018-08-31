@@ -10,13 +10,21 @@ class Platte < Thor
   desc 'combine FILE MAIN [MODULE [MODULE ...]]', 'combine FILE from MAIN and MODULES.'
   def combine(file, main, *modules)
     puts "Loading selected modules...".green
-    main_module, platte_modules = get_modules main, modules
-    output_module_info(file, main_module, platte_modules)
-    write_to_file file, Combinator.new.combine(main_module, platte_modules)
-    puts "Copy assets...".green
-    copy_assets File.dirname(file), main_module, platte_modules
-    puts "Done.".green
-    puts "🏢"
+    begin
+      main_module, platte_modules = get_modules main, modules
+      output_module_info(file, main_module, platte_modules)
+      write_to_file file, Combinator.new.combine(main_module, platte_modules)
+      puts "Copying assets...".green
+      copy_assets File.dirname(file), main_module, platte_modules
+      puts "Done.".green
+      puts "🏢"
+    rescue PlatteModuleCreationException => e
+      puts "Could not load modules to construct #{file}!".black.on_red
+      puts "  #{e.reason}".red
+    rescue Exception => e
+      puts "Could not construct #{file}!".black.on_red
+      puts "  #{e.reason}".red
+    end
   end
 
   private

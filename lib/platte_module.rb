@@ -1,8 +1,10 @@
 require 'json'
+require './lib/exception/platte_module_creation_exception'
 
 # A single template
 class PlatteModule
   def initialize(folder)
+    raise PlatteModuleCreationException.new "Module at #{folder} could not be found!" unless File.exist? folder
     @folder = folder
     initialize_module_info
     initialize_template

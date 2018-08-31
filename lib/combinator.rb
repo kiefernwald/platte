@@ -30,6 +30,6 @@ class Combinator
     styles = Array.new
     platte_modules.each { |mod| styles.concat(mod.stylesheets) }
 
-    styles
+    styles.uniq
   end
 end
