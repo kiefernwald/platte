@@ -1,19 +1,31 @@
 #!/usr/bin/env ruby
 
 require 'thor'
-require './lib/combinator'
 require 'fileutils'
+require 'colorize'
+require './lib/combinator'
 
 # Platte command line tool
 class Platte < Thor
   desc 'combine FILE MAIN [MODULE [MODULE ...]]', 'combine FILE from MAIN and MODULES.'
   def combine(file, main, *modules)
+    puts "Loading selected modules...".green
     main_module, platte_modules = get_modules main, modules
+    output_module_info(file, main_module, platte_modules)
     write_to_file file, Combinator.new.combine(main_module, platte_modules)
+    puts "Copy assets...".green
     copy_assets File.dirname(file), main_module, platte_modules
+    puts "Done.".green
+    puts "🏢"
   end
 
   private
+
+  def output_module_info(file, main_module, platte_modules)
+    puts "#{'🏗  Constructing'.green} #{file.yellow} #{'from the following modules:'.green}"
+    puts "  * #{main_module.name} (main module) – #{main_module.description}".blue
+    platte_modules.each {|mod| puts "  * #{mod.name} – #{mod.description}".blue}
+  end
 
   def get_modules(main, modules)
     main_module = PlatteModule.new "modules/%s.main" % main
