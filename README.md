@@ -6,6 +6,8 @@
 
 Platte is a small command line tool that combines static HTML pages from modules. It is named after the german word [Plattenbau](https://en.wikipedia.org/wiki/Plattenbau) which is a way of building houses based on pre-fabricated parts.
 
+![Plattenbau](output.png)
+
 ## Installation
 
 Platte requires ruby. To install, run:
