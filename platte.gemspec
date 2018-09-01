@@ -1,4 +1,6 @@
-lib = File.expand_path('../lib', __FILE__)
+# frozen_string_literal: true
+
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'platte/version'
 
@@ -8,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Thomas Bretzke']
   spec.email         = ['thomas.bretzke@kiefernwald.net']
 
-  spec.summary       = %q{A static generator tool for static HTML pages combined from modules.}
-  spec.homepage      = "https://github.com/kiefernwald/platte"
+  spec.summary       = 'A static generator tool for static HTML pages combined from modules.'
+  spec.homepage      = 'https://github.com/kiefernwald/platte'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.

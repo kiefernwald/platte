@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 require 'json'
 require './lib/exception/platte_module_creation_exception'
 
-# A single template
+# A single module
 class PlatteModule
-  def initialize(folder, name, description, template, stylesheets = [], javascripts = [])
+  # rubocop:disable Metrics/ParameterLists
+  def initialize folder, name, description, template, stylesheets = [], javascripts = []
     @folder = folder
     @name = name
     @template = template
@@ -11,6 +14,7 @@ class PlatteModule
     @stylesheets = stylesheets if stylesheets
     @javascripts = javascripts if javascripts
   end
+  # rubocop:enable Metrics/ParameterLists
 
   def directory
     File.expand_path "./#{@folder}"

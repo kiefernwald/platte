@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
+# Exception thrown during creation of a Platte module
 class PlatteModuleCreationException < StandardError
-  def initialize(reason)
+  def initialize reason
     @reason = reason
   end
 

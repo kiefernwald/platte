@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'thor'
 require 'fileutils'
@@ -9,51 +10,60 @@ require './lib/platte_module_loader'
 # Platte command line tool
 class Platte < Thor
   desc 'combine FILE MAIN [MODULE [MODULE ...]]', 'combine FILE from MAIN and MODULES.'
-  option :no_beautify, :type => :boolean, :default => false
-  def combine(file, main, *modules)
-    puts "Loading selected modules...".green
-    begin
-      main_module, platte_modules = get_modules main, modules
-      output_module_info(file, main_module, platte_modules)
-      write_to_file file, Combinator.new.combine(main_module, platte_modules, beautify: !options[:no_beautify])
-      puts "Copying assets...".green
-      copy_assets File.dirname(file), main_module, platte_modules
-      puts "Done.".green
-      puts "🏢"
-    rescue PlatteModuleCreationException => e
-      puts "Could not load modules to construct #{file}!".black.on_red
-      puts "  #{e.reason}".red
-    rescue Exception => e
-      puts "Could not construct #{file}!".black.on_red
-      puts "  #{e.reason}".red
-    end
+  option :no_beautify, type: :boolean, default: false
+  def combine file, main, *modules
+    main_module, platte_modules = get_modules main, modules
+    combine_and_save(file, main_module, platte_modules)
+    copy_assets File.dirname(file), main_module, platte_modules
+    output_final_info
+  rescue PlatteModuleCreationException => e
+    output_error e, "Could not load modules to construct #{file}!"
+  rescue StandardError => e
+    output_error e, "Could not construct #{file}!"
   end
 
   private
 
-  def output_module_info(file, main_module, platte_modules)
+  def combine_and_save file, main_module, platte_modules
+    output_module_info(file, main_module, platte_modules)
+    write_to_file file, Combinator.new.combine(main_module, platte_modules, beautify: !options[:no_beautify])
+  end
+
+  def output_final_info
+    puts 'Done.'.green
+    puts '🏢'
+  end
+
+  def output_error error, message
+    puts message.black.on_red
+    puts "  #{error.reason}".red
+  end
+
+  def output_module_info file, main_module, platte_modules
     puts "#{'🏗  Constructing'.green} #{file.yellow} #{'from the following modules:'.green}"
     puts "  * #{main_module.name} (main module) – #{main_module.description}".blue
     platte_modules.each { |mod| puts "  * #{mod.name} – #{mod.description}".blue }
   end
 
-  def get_modules(main, modules)
+  def get_modules main, modules
+    puts 'Loading selected modules...'.green
     loader = PlatteModuleLoader.new
-    main_module = loader.create_from_folder "modules/%s.main" % main
-    platte_modules = modules.map { |mod| loader.create_from_folder "modules/%s.module" % mod }
+    main_module = loader.create_from_folder "modules/#{main}.main"
+    platte_modules = modules.map { |mod| loader.create_from_folder "modules/#{mod}.module" }
 
     [main_module, platte_modules]
   end
 
-  def write_to_file(file, contents)
-    file = File.new(file, "w")
+  def write_to_file file, contents
+    file = File.new(file, 'w')
     file.write(contents)
     file.close
   end
 
-  def copy_assets(destination, main, modules)
+  def copy_assets destination, main, modules
+    puts 'Copying assets...'.green
     FileUtils.copy_entry "#{main.directory}/assets", "#{destination}/assets"
-    modules.each { |mod| FileUtils.copy_entry "#{mod.directory}/assets", "#{destination}/assets" } if modules
+    modules&.each { |mod| FileUtils.copy_entry "#{mod.directory}/assets", "#{destination}/assets" }
   end
 end
 
