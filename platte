@@ -4,16 +4,18 @@ require 'thor'
 require 'fileutils'
 require 'colorize'
 require './lib/combinator'
+require './lib/platte_module_loader'
 
 # Platte command line tool
 class Platte < Thor
   desc 'combine FILE MAIN [MODULE [MODULE ...]]', 'combine FILE from MAIN and MODULES.'
+  option :no_beautify, :type => :boolean, :default => false
   def combine(file, main, *modules)
     puts "Loading selected modules...".green
     begin
       main_module, platte_modules = get_modules main, modules
       output_module_info(file, main_module, platte_modules)
-      write_to_file file, Combinator.new.combine(main_module, platte_modules)
+      write_to_file file, Combinator.new.combine(main_module, platte_modules, beautify: !options[:no_beautify])
       puts "Copying assets...".green
       copy_assets File.dirname(file), main_module, platte_modules
       puts "Done.".green
@@ -32,12 +34,13 @@ class Platte < Thor
   def output_module_info(file, main_module, platte_modules)
     puts "#{'🏗  Constructing'.green} #{file.yellow} #{'from the following modules:'.green}"
     puts "  * #{main_module.name} (main module) – #{main_module.description}".blue
-    platte_modules.each {|mod| puts "  * #{mod.name} – #{mod.description}".blue}
+    platte_modules.each { |mod| puts "  * #{mod.name} – #{mod.description}".blue }
   end
 
   def get_modules(main, modules)
-    main_module = PlatteModule.new "modules/%s.main" % main
-    platte_modules = modules.map { |mod| PlatteModule.new "modules/%s.module" % mod }
+    loader = PlatteModuleLoader.new
+    main_module = loader.create_from_folder "modules/%s.main" % main
+    platte_modules = modules.map { |mod| loader.create_from_folder "modules/%s.module" % mod }
 
     [main_module, platte_modules]
   end

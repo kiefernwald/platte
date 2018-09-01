@@ -3,11 +3,13 @@ require './lib/exception/platte_module_creation_exception'
 
 # A single template
 class PlatteModule
-  def initialize(folder)
-    raise PlatteModuleCreationException.new "Module at #{folder} could not be found!" unless File.exist? folder
+  def initialize(folder, name, description, template, stylesheets = [], javascripts = [])
     @folder = folder
-    initialize_module_info
-    initialize_template
+    @name = name
+    @template = template
+    @description = description
+    @stylesheets = stylesheets if stylesheets
+    @javascripts = javascripts if javascripts
   end
 
   def directory
@@ -19,20 +21,4 @@ class PlatteModule
   attr_reader :stylesheets
   attr_reader :javascripts
   attr_reader :template
-
-  protected
-
-  def initialize_module_info
-    json_file = File.read("#{@folder}/info.json")
-    info = JSON.parse(json_file)
-
-    @name = info['name']
-    @description = info['description']
-    @stylesheets = info['stylesheets'] if info['stylesheets']
-    @javascripts = info['javascripts'] if info['javascripts']
-  end
-
-  def initialize_template
-    @template = File.read("#{@folder}/template.mustache")
-  end
 end

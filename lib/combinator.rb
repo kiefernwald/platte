@@ -7,14 +7,16 @@ class Combinator
   INDENTATION = '    '
 
   # Combines the given platte modules
-  def combine(main, modules)
+  def combine(main, modules, beautify: true)
     html = Mustache.render(
       main.template,
-      :container_body => generate_body(modules),
+      :module_contents => generate_body(modules),
       :stylesheets => generate_stylesheets(modules)
     )
 
-    HtmlBeautifier.beautify(html, indent: INDENTATION)
+    html = HtmlBeautifier.beautify(html, indent: INDENTATION) if beautify
+
+    html
   end
 
   protected
