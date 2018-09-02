@@ -1,11 +1,11 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
 
-gem "mustache", "~> 1.0"
-gem "htmlbeautifier"
-gem "thor"
-gem "colorize"
-
+source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
-
-# Specify your gem's dependencies in platte.gemspec
 gemspec
+
+gem 'colorize'
+gem 'coveralls', require: false
+gem 'htmlbeautifier'
+gem 'mustache', '~> 1.0'
+gem 'thor'

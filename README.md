@@ -1,5 +1,8 @@
 # Platte
 
+[![Build Status](https://travis-ci.org/kiefernwald/platte.svg?branch=master)](https://travis-ci.org/kiefernwald/platte)
+[![Coverage Status](https://coveralls.io/repos/github/kiefernwald/platte/badge.svg?branch=specs)](https://coveralls.io/github/kiefernwald/platte?branch=specs)
+
 ![Plattenbau](pic.jpg)
 
 *(Transport of Plattenbau parts in Karl-Marx-Stadt, GDR, 1975 [CC BY-SA 3.0 de](https://creativecommons.org/licenses/by-sa/3.0/de/deed.en) Deutsche Fotothek)*
@@ -17,6 +20,10 @@ Platte requires ruby. To install, run:
 ## Usage
 
 The main script to be used is `platte` in the main folder. It has a single command, called `combine` which lets you combine a main-module (usually the surrounding HTML structure with placeholders for resources) and other modules.
+
+Example call:
+
+`platte combine html5 header content`
 
 All modules you define must be placed in the `modules` folder. Main modules names end with `.main`, other modules names end with `.module`.
 
