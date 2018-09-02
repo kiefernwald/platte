@@ -10,4 +10,3 @@ Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: comma
 Metrics/LineLength:
   Max: 120
-
