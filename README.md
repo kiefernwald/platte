@@ -18,6 +18,10 @@ Platte requires ruby. To install, run:
 
 The main script to be used is `platte` in the main folder. It has a single command, called `combine` which lets you combine a main-module (usually the surrounding HTML structure with placeholders for resources) and other modules.
 
+Example call:
+
+`platte combine html5 header content`
+
 All modules you define must be placed in the `modules` folder. Main modules names end with `.main`, other modules names end with `.module`.
 
 ## Module structure
