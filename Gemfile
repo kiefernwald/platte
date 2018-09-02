@@ -2,6 +2,7 @@
 
 source 'https://rubygems.org'
 
+gem 'coveralls', require: false
 gem 'colorize'
 gem 'htmlbeautifier'
 gem 'mustache', '~> 1.0'
