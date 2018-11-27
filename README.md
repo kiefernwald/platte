@@ -13,19 +13,34 @@ Platte is a small command line tool that combines static HTML pages from modules
 
 ## Installation
 
-Platte requires ruby. To install, run:
+Platte requires a ruby environment with version 2.3 or higher. To install, run:
 
-`bundle install`
+`gem install platte`
 
 ## Usage
 
-The main script to be used is `platte` in the main folder. It has a single command, called `combine` which lets you combine a main-module (usually the surrounding HTML structure with placeholders for resources) and other modules.
+After the gem installation, `platte` is available in command line. It lets you combine a static HTML file from a given set of modules. Modules are folders with some configuation files and code in it and sit in the `modules` subfolder of the tool. They come in two flavours:
+
+1. Main modules names, ending with `.main` – usually they hold the surrounding HTML structure with placeholders for resources
+2. Other modules names end with `.module` – they are building blocks you can freely combine together as the body of a main module 
+
+You can use the `platte` command as follows:
+
+### list
+
+`platte list`
+
+This call shows you which modules are available in your system.
+
+### combine
+
+`platte combine <TARGET FILE> <MAIN MODULE> <MODULE 1> ... <MODULE N>`
+
+This lets you combine a single main-module with any number of other modules to a given target file.
 
 Example call:
 
-`platte combine html5 header content`
-
-All modules you define must be placed in the `modules` folder. Main modules names end with `.main`, other modules names end with `.module`.
+`platte combine some/output/file.html html5 header content`
 
 ## Module structure
 
