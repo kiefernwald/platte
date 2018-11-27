@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-require './lib/platte/version'
+lib = File.expand_path('lib', __dir__)
+$LOAD_PATH.unshift lib unless $LOAD_PATH.include?(lib)
+require 'platte/version'
 
 Gem::Specification.new do |s|
   s.name = 'platte'
@@ -8,14 +10,11 @@ Gem::Specification.new do |s|
   s.authors = ['Thomas Bretzke']
   s.homepage = 'https://github.com/kiefernwald/platte'
   s.summary = 'A static generator tool for static HTML pages combined from modules.'
-  s.license = 'ISC'
+  s.license = 'MIT'
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  raise 'RubyGems 2.0 or newer is required to protect against public gem pushes.' unless s.respond_to?(:metadata)
-  s.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-
-  s.files = Dir['.gemspec', 'lib/**/*.rb', 'license.txt', 'readme.md']
+  s.executables = %w[platte]
+  s.require_paths = %w[lib]
+  s.files = %w[LICENSE README.md platte.gemspec] + Dir['lib/**/*.rb', 'bin/*']
 
   s.required_ruby_version = '~> 2.3'
   s.add_development_dependency 'bundler', '~> 1.16'
