@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 require 'thor'
@@ -22,6 +21,14 @@ class Platte < Thor
     output_error e, "Could not construct #{file}!"
   end
 
+  desc 'list', 'list all available modules.'
+  def list
+    puts '🏢  The following main modules are available:'.green
+    get_modules_from_folder('modules', extension: 'main').each(&method(:output_single_module))
+    puts "\n📦  The following modules are available:".green
+    get_modules_from_folder('modules').each(&method(:output_single_module))
+  end
+
   private
 
   def combine_and_save file, main_module, platte_modules
@@ -41,8 +48,19 @@ class Platte < Thor
 
   def output_module_info file, main_module, platte_modules
     puts "#{'🏗  Constructing'.green} #{file.yellow} #{'from the following modules:'.green}"
-    puts "  * #{main_module.name} (main module) – #{main_module.description}".blue
-    platte_modules.each { |mod| puts "  * #{mod.name} – #{mod.description}".blue }
+    output_single_module(main_module, is_main: true)
+    platte_modules.each(&method(:output_single_module))
+  end
+
+  def output_single_module module_object, is_main: false
+    module_name = is_main ? "#{module_object.name} (main module)" : module_object.name
+    puts "  * #{module_name} – #{module_object.description}".blue
+  end
+
+  def get_modules_from_folder folder, extension: 'module'
+    loader = PlatteModuleLoader.new
+    Dir.glob("*.#{extension}", base: folder)
+       .map { |mod| loader.create_from_folder "modules/#{mod}" }
   end
 
   def get_modules main, modules
@@ -66,5 +84,3 @@ class Platte < Thor
     modules&.each { |mod| FileUtils.copy_entry "#{mod.directory}/assets", "#{destination}/assets" }
   end
 end
-
-Platte.start
