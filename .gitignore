@@ -8,6 +8,7 @@
 /tmp/
 /modules/*
 .idea
+Gemfile.lock
 
 # rspec failure tracking
 .rspec_status
