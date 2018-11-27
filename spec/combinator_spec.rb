@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './lib/combinator'
+require 'combinator'
 
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Metrics/LineLength

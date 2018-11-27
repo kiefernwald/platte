@@ -3,8 +3,8 @@
 require 'thor'
 require 'fileutils'
 require 'colorize'
-require './lib/combinator'
-require './lib/platte_module_loader'
+require 'combinator'
+require 'platte_module_loader'
 
 # Platte command line tool
 class Platte < Thor

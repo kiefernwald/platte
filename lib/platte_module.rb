@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
-require_relative 'exception/platte_module_creation_exception'
+require 'exception/platte_module_creation_exception'
 
 # A single module
 class PlatteModule

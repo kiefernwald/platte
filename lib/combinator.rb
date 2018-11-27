@@ -2,7 +2,7 @@
 
 require 'mustache'
 require 'htmlbeautifier'
-require './lib/platte_module'
+require 'platte_module'
 
 # Combinator class
 class Combinator

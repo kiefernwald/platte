@@ -2,6 +2,6 @@
 # -*- mode: ruby -*-
 # frozen_string_literal: true
 
-require './lib/platte'
+require 'platte'
 
 Platte.start
